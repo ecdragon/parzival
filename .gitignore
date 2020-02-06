@@ -1,0 +1,7 @@
+/target/
+.settings
+.classpath
+.project
+**/Eclipse*.app
+**/*.dmg
+src/main/resources/static/ace_180613_01

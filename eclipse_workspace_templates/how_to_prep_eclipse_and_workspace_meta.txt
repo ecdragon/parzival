@@ -1,0 +1,93 @@
+Steps to prep Eclipse and workspace meta folder, and run
+  (This typically takes 25 minutes)
+
+  - Create a new workspace template folder somewhere under this dir 
+    - like 2018-12-R 
+    - and a "template_workspace" dir under that...
+  - Download latest Eclipse
+  - Unzip it
+  - Copy Eclipse.app into the new directory you just made (the top level one, not the template_workspace subdir)
+    - USING FINDER!!!
+    - Don't copy / paste from or into Eclipse, or it won't open!! Use finder!!!
+  - Open the newly copied Eclipse.app -- from in Finder!!
+    - Yes it should pop up a warning about being downloaded form the internet - hit "Open"
+  - At workspace prompt, browse for the new template_workspace folder you made
+  - Check the "Use this as the default and do not ask again" checkbox
+  - Click "Launch" button
+  - Uncheck the "Always show welcome at start up" checkbox (lower right)
+  - Click the "Workbench" button (upper right)
+  - Make the window bigger and center
+    - (this is how it will open the first time it's copied / opened...)
+  - Ctrl-H opens only File search
+    - Ctrl-h -> Customize... -> Deselect All -> Check "File Search" -> OK -> Cancel
+  - In preferences
+    - Uncheck 3x "reuse" checkboxes (search for reuse)
+    - In Run/Debug -> Console
+      - Change "Console buffer size (characters):" to 500000
+    - In Java -> Code Style -> Formatter -> Edit (active profile edit Eclipse [built-in])
+      - In New Lines -> In control statements
+        - Check Before else, catch, finally, while
+        - Check "After labels"
+      - In Indentation -> "Indented elements"
+        - Check "Statements within 'switch' body"
+      - Change "Profile name:" to "Eclipse [built-in] - Awesome"
+      - Apply, Ok
+    - In General -> Workspace
+      - Check the "Show full workspace path:" checkbox
+      - Change "Show workspace name:" to "Awesome"
+    - In Install/Update -> Automatic Updates
+      - Uncheck "Automatically find new updates and notify me"
+    - Apply and Close (Preferences)
+  - Arrange UI as desired
+    - Project Explorer
+      - In left pane (should already be there) 
+      - 3 Dots (menu option upper right in pane) -> Package Presentation -> Hierarchical
+      - "Link with Editor" (double-yellow arrows) (and Navigator pane)
+    - Outline pane
+      - In the left pane (with Project Explorer)
+      - NO - (not available anymore) - Click the Sort Alphabetically toggle (to "on" position) (can't, sorry!)
+    - Close Task List pane (right)
+    - Open Console (should show in bottom-right) (Window -> Show View -> Console)
+    - Close panes on bottom: Markers, Properties, Servers, Data Source Explorer, Snippets
+    - Window -> Show View -> other (repeat for each below...)
+      - Debug (then move it to lower left)
+        - 3 Dots (menu) -> Show Debug Toolbar option
+      - Variables (then move it to panel with Project Explorer -> upper left)
+      - Debug Shell (leave it in lower-right with Console)
+      - Breakpoints (then move it to panel with Debug -> lower left)
+      - Navigator (move it to upper-left next to Project Explorer)
+        - click yellow "link with editor" toggle
+      - Ant
+    - Set focus panes to (just click on the panel title to focus):
+      - Project Explorer (upper left)
+      - Debug (lower left)
+      - Console (lower right)
+  - Install "Yaml Editor" from Eclipse Marketplace (install anyway, don't restart Eclipse)
+  - Install "Eclipse Docker Tooling" from Eclipse Marketplace (don't restart)
+  - Install "Bash Editor" from Eclipse Marketplace 
+    - install anyway, restart Eclipse -> check the "Remember my decision" checkbox
+  - After restart...
+  - Make file associations (like Associate .bash files with bash editor)
+    - Preferences -> General -> Editors -> File Associations -> File Types (upper right pane)
+      - Add.. -> *.bash -> Add editor (bash editor)
+        - Then associate bash editor in lower pane
+      - Add.. -> *.command -> Add editor (bash editor)  
+        - Then associate bash editor in lower pane
+      - Apply and Close (Preferences)     
+  - Close eclipse 
+    - red X (button top left) -> check the "Remember my decision" checkbox -> Exit
+  - Refresh Parzival project in Eclipse to show new template folder
+  - In Navigator tab -> Go into the contents of Eclipse.app (parzival/eclipse_workspace_templates/20xx-xx-x_x/)
+    - Edit the Eclipse.app/Contents/Eclipse/configuration/.settings/org.eclipse.ui.ide.prefs file:
+      - Backup this file to the root dir (2019-06-R_1 or whatever)
+        - This way, you can put this back to make future edits to Eclipse
+      - Replace the "RECENT_WORKSPACES" value (everything after the equals sign on that line) with "replace_me"
+      - Example was:
+        - RECENT_WORKSPACES=/Data/eclipse_projects/d/180918_01_parzival/workspace/parzival/eclipse_workspace_templates/2018-12-R/template_workspace
+      - Example is now:
+        - RECENT_WORKSPACES=replace_me        
+  - Set templateEclipseDirectoryPath var in SetupDevelopmentEnvironment.java to the new template workspace dir you just made
+  - Run your new dev env setup via running via Run As -> Java Application in SetupDevelopmentEnvironment.java
+  
+  
+  
