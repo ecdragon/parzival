@@ -1,5 +1,6 @@
 package com.ecdragon.parzival.utils;
 
+import java.io.File;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
@@ -10,10 +11,13 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.regex.Matcher;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -31,6 +35,35 @@ public class UtilsParzival {
 	private static final int alphaNumericCharsLength = alphaNumericChars.length;
 	public static final String dateTimeFormatSortable = "yyyyMMdd_HHmmss";
 	
+	private static Path userHomeDirPath;
+	private static String userHomeDirPathString;
+	public static Path getUserHomeDirPath() {
+		if (userHomeDirPath == null) {
+			userHomeDirPath = Paths.get(System.getProperty("user.home")); 
+		}
+		return userHomeDirPath;
+	}
+	public static String getUserHomeDirPathString() {
+		if (userHomeDirPathString == null) {
+			Path userHomeDirPath = getUserHomeDirPath();
+			if (userHomeDirPath != null) {
+				userHomeDirPathString = userHomeDirPath.toString();
+			}
+		}
+		return userHomeDirPathString;
+	}
+	
+	public static Path getThisAppWorkingDirectoryPath() {
+		try {
+			Path thisAppWorkingDirectoryPath = Paths.get("").toAbsolutePath();
+			return thisAppWorkingDirectoryPath;
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	public static String generateDateTimeNowSortableString() {
         LocalDateTime now = LocalDateTime.now();
 		String dateTimeSortableString = generateDateTimeSortableString(now);
@@ -196,6 +229,84 @@ public class UtilsParzival {
 			}
 			return pathResult;
 		}
+		catch (Exception e) {
+			return null;
+		}
+	}
+	
+	public static List<File> listAllFilesInDirectoryPath(Path directoryPath) {
+		if (directoryPath == null) {
+			return null;
+		}
+		try {
+			File directoryPathFile = directoryPath.toFile();
+			if (directoryPathFile.isDirectory()) {
+				
+				List<File> directoryFiles = 
+						Stream.of(directoryPathFile.listFiles())
+						.sorted()
+						.collect(Collectors.toList());
+				
+				return directoryFiles;
+			}
+			// We COULD use the file's parent dir...
+//			else if (directoryPathFile.isFile()) {
+//				File parentDirectory = directoryPathFile.getParentFile();
+//			}
+			return null;
+		} 
+		catch (Exception e) {
+			return null;
+		}
+	}
+	
+	public static List<File> listDirectoriesInDirectoryPath(Path directoryPath) {
+		if (directoryPath == null) {
+			return null;
+		}
+		try {
+			// Get em all
+			List<File> allFilesInDir = listAllFilesInDirectoryPath(directoryPath);
+			if (allFilesInDir == null) {
+				return null;
+			}
+			
+			// Filter out all but directory files...
+			List<File> allDirsInDir = new ArrayList<>();
+			for (File file : allFilesInDir) {
+				if (file.isDirectory()) {
+					allDirsInDir.add(file);
+				}
+			}
+			
+			return allDirsInDir;
+		} 
+		catch (Exception e) {
+			return null;
+		}
+	}
+
+	public static List<File> listFilesInDirectoryPath(Path directoryPath) {
+		if (directoryPath == null) {
+			return null;
+		}
+		try {
+			// Get em all
+			List<File> allFilesInDir = listAllFilesInDirectoryPath(directoryPath);
+			if (allFilesInDir == null) {
+				return null;
+			}
+			
+			// Filter out all but directory files...
+			List<File> filesInDir = new ArrayList<>();
+			for (File file : allFilesInDir) {
+				if (file.isFile()) {
+					filesInDir.add(file);
+				}
+			}
+			
+			return filesInDir;
+		} 
 		catch (Exception e) {
 			return null;
 		}
@@ -475,10 +586,6 @@ public class UtilsParzival {
 		System.out.println(convertCamelCaseToSnakeCase("SomeSString", false));
 	}
 	
-	public static void main(String[] args) {
-		System.out.println(replacePeriodsWithForwardSlashes("io.blustream.galadriel.features.measurement.battery"));
-	}
-	
 	public static String convertCamelCaseToSnakeCase(String stringToConvert) {
 		String result = convertCamelCaseToSnakeCase(stringToConvert, false);
 		return result;
@@ -570,6 +677,52 @@ public class UtilsParzival {
 		}
 		catch (Exception e) {
 			return null;
+		}
+	}
+
+	public static void printAllAttributesAndParametersInRequest(HttpServletRequest request) {
+		
+		if (request == null) {
+			return;
+		}
+		
+		try {
+			// Get and print all attribute names...
+			List<String> requestAttributeNamesList = new ArrayList<>();
+			System.out.println("\n\nRequest attributes:\n");
+			try {
+				Enumeration<String> requestAttributeNamesEnumeration = request.getAttributeNames();
+//				requestAttributeNamesList = new ArrayList<>();
+				while(requestAttributeNamesEnumeration.hasMoreElements()) {
+					requestAttributeNamesList.add(requestAttributeNamesEnumeration.nextElement());
+				}
+				for (String requestAttributeName : requestAttributeNamesList) {
+					System.out.println(requestAttributeName);
+				}
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			// Get and print all request param names...
+			List<String> requestParameterNamesList = new ArrayList<>();
+			System.out.println("\n\nRequest parameters:\n");
+			try {
+				Enumeration<String> requestParameterNamesEnumeration = request.getParameterNames();
+//				requestParameterNamesList = new ArrayList<>();
+				while(requestParameterNamesEnumeration.hasMoreElements()) {
+					requestParameterNamesList.add(requestParameterNamesEnumeration.nextElement());
+				}
+				for (String requestParameterName : requestParameterNamesList) {
+					System.out.println(requestParameterName);
+				}
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }
