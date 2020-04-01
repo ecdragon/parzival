@@ -1,3 +1,4 @@
+.DS_Store
 /target/
 .settings
 .classpath
@@ -5,3 +6,4 @@
 **/Eclipse*.app
 **/*.dmg
 src/main/resources/static/ace_180613_01
+src/main/resources/static/isomorphic

@@ -1,5 +1,5 @@
 MAX_RECENT_WORKSPACES=10
-RECENT_WORKSPACES=/Users/${username}/Data/projects/d/${bundle_directory_name}/workspace/parzival/eclipse_workspace_templates/2019-12-R_1/template_workspace
+RECENT_WORKSPACES=/Users/${username}/Data/projects/generic/${bundle_directory_name}/workspace/parzival/eclipse_workspace_templates/2019-12-R_1/template_workspace
 RECENT_WORKSPACES_PROTOCOL=3
 SHOW_RECENT_WORKSPACES=false
 SHOW_WORKSPACE_SELECTION_DIALOG=false

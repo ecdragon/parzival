@@ -91,80 +91,25 @@ public class RunMacCommand {
 		
 		try (
 				BufferedReader stdOutBufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
-//				BufferedReader stdErrBufferedReader = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 				BufferedWriter stdInBufferedWriter = new BufferedWriter(new OutputStreamWriter(process.getOutputStream()));
 				) {
 			
 			for (String command : commandsList) {
 				
 				System.out.println("About to execute command: " + command);
-				String readLineString = null;
 				StringBuilder stdOutStringBuilder = new StringBuilder();
 
-//				stdInBufferedWriter.write(command + "\n");
-				// From https://stackoverflow.com/questions/3643939/java-process-with-input-output-stream
-				// (" + input + ") && echo --EOF--
-//				stdInBufferedWriter.write("(" + command + ") && echo --EOF--\n");
 				stdInBufferedWriter.write(command + "\n");
 				stdInBufferedWriter.flush();
 				stdInBufferedWriter.write("echo " + tokenString + "\n");
 				stdInBufferedWriter.flush();
 				
-				// Wait a smidge for the command to execute
-//				Thread.sleep(15L);
-				
-				// read the output from the command
-				// 10 minute timeout waiting for output
-				long msTimeout = 600000L;
-				long waitSoFar = 0L;
-				long waitTime = 50L; 
-				do {
-					Thread.sleep(waitTime);
-					waitSoFar += waitTime;
-//					System.out.println("waitSoFar: " + waitSoFar);
-					while (stdOutBufferedReader.ready() && (readLineString = stdOutBufferedReader.readLine()) != null) {
-						stdOutStringBuilder.append(readLineString + "\n");
-						System.out.println(readLineString);
-						waitSoFar = 0L;
-					}
-//					if (readLineString != null) {
-//						Boolean isTrue = !(readLineString.trim().equalsIgnoreCase(tokenString));
-//						System.out.println("is it true?? " + isTrue);
-//					}
-//					System.out.println("(" + (readLineString != null) + " && " + !(readLineString.trim().equalsIgnoreCase(tokenString)) + ") && " + (waitSoFar < msTimeout) + " = "
-//							+ ((readLineString != null 
-//							&& !(readLineString.trim().equalsIgnoreCase(tokenString)))
-//									&& waitSoFar < msTimeout)
-//							);
-				}
-				while ((readLineString != null 
-							&& !(readLineString.trim().equalsIgnoreCase(tokenString)))
-						&& waitSoFar < msTimeout);
-				
-				if (waitSoFar >= msTimeout) {
-					throw new Exception("timed out waiting for command to output next line. command: " + command);
-				}
-				
-				// read any errors from the attempted command
-//				while (stdErrBufferedReader.ready() && (readLineString = stdErrBufferedReader.readLine()) != null) {
-//					stdErrStringBuilder.append(readLineString + "\n");
-//				}
+				flushOutput(stdOutBufferedReader);
 				
 				String currentOutput = commandResults.getOutput();
 				String nextOutput = stdOutStringBuilder.toString();
-//				System.out.println("nextoutput: " + nextOutput);
 				System.out.println("\n");
 				commandResults.setOutput(currentOutput + "\n\n" + nextOutput);
-				
-				// This doesn't work! I fed it "ls -la" with -v as /bin/bash switch, and it outputted "ls -la" in the error stream!!
-//				String stdErrString = stdErrStringBuilder.toString();
-//				commandResults.setErrorOutput(commandResults.getErrorOutput() + stdErrString);
-//				Boolean success = (stdErrString == null || stdErrString.isEmpty()) ? Boolean.FALSE : Boolean.TRUE;
-//				commandResults.setSuccess(success);
-//				process.
-//				if (!success) {
-//					return commandResults;
-//				}
 			}
 			
 			commandResults.setSuccess(Boolean.TRUE);
@@ -184,6 +129,36 @@ public class RunMacCommand {
 //		commandResults.setSuccess(success);
 //		
 //		return commandResults;
+	}
+	
+	private static void flushOutput(BufferedReader stdOutBufferedReader) throws Exception {
+		// read the output from the command
+		// 10 minute timeout waiting for output
+		long msTimeout = 600000L;
+		long waitSoFar = 0L;
+		long waitTime = 50L;
+		String readLineString = null;
+		StringBuilder stdOutStringBuilder = new StringBuilder();
+		String tokenString = "---ENDSTRING---";
+		
+		do {
+			Thread.sleep(waitTime);
+			waitSoFar += waitTime;
+			while (stdOutBufferedReader.ready() && (readLineString = stdOutBufferedReader.readLine()) != null) {
+				stdOutStringBuilder.append(readLineString + "\n");
+				System.out.println(readLineString);
+				waitSoFar = 0L;
+			}
+			if (waitSoFar >= msTimeout) {
+				break;
+			}
+		}
+		while (readLineString == null
+			|| !readLineString.trim().equalsIgnoreCase(tokenString));
+		
+		if (waitSoFar >= msTimeout) {
+			throw new Exception("timed out waiting for command to output next line.");
+		}
 	}
 	
 	public static Process startProcess() {
