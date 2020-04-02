@@ -89,5 +89,18 @@ Steps to prep Eclipse and workspace meta folder, and run
   - Set templateEclipseDirectoryPath var in SetupDevelopmentEnvironment.java to the new template workspace dir you just made
   - Run your new dev env setup via running via Run As -> Java Application in SetupDevelopmentEnvironment.java
   
+
+How to prepare an executable seeder war
+
+  - Copy latest eclipse + template_workspace dir to "latest" folder (in finder!!)
+  - make sure application.properties has pathStringFromAppWorkingDirToEclipseTemplateDir = eclipse_workspace_templates/latest
+  - run maven "clean package" (it uses spring boot packaging plugin) via "parzival - clean package - build runnable war file" build config
+  - put the newly created war in an empty folder called "parzival"
+  - open disk utility
+    - file -> new image -> image from folder
+    - navigate to and select "eclipse_template" folder in this workspace -> choose
+    - save as: "eclipse_template", wherever, encryption: none, image format: compressed    
+    - save
+  - repeat disk utility steps for "parzival" folder with the executable jar/war in it...
   
   
