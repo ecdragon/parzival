@@ -1,9 +1,9 @@
 .DS_Store
 /target/
-.settings
+eclipse_template/template_workspace
+eclipse_template/Eclipse.app
 .classpath
 .project
-**/Eclipse*.app
 **/*.dmg
 src/main/resources/static/ace_180613_01
 src/main/resources/static/isomorphic

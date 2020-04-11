@@ -1,0 +1,5 @@
+
+# Ignore everything except org.eclipse.wst.validation.prefs and .gitignore files here
+*
+!org.eclipse.wst.validation.prefs
+!.gitignore
