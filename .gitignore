@@ -7,3 +7,4 @@ eclipse_template/Eclipse.app
 **/*.dmg
 src/main/resources/static/ace_180613_01
 src/main/resources/static/isomorphic
+**/Eclipse.app

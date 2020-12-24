@@ -199,6 +199,24 @@ isc.RestDataSource.create({
 						type: "spacer",
 						endRow: false
 					},
+					{name: "btnConfigureSamanthaCook",
+						startRow: false,
+						title: "Samantha Cook",
+						type: "button",
+						width: 300,
+						click: function() {
+							IDDynamicForm_SetupDevelopmentEnvironment_Field_EnvironmentContext.setValue("GenericGithubHttps");
+							IDDynamicForm_SetupDevelopmentEnvironment_Field_ProjectName.setValue("samantha_cook");
+							IDDynamicForm_SetupDevelopmentEnvironment_Field_Intent.setValue("Samantha Cook - Generic open source");
+							IDDynamicForm_SetupDevelopmentEnvironment_Field_BranchName.clearValue();
+							IDDynamicForm_SetupDevelopmentEnvironment_Field_GitAccountName.setValue("ecdragon");
+						}
+					},
+					
+					{name: "spacer",
+						type: "spacer",
+						endRow: false
+					},
 					{name: "btnConfigureParzival",
 						startRow: false,
 						title: "Parzival",
@@ -283,20 +301,35 @@ isc.RestDataSource.create({
 						width: 200,
 						click: function() {
 							try {
-								isc.RPCManager.sendRequest({ 
-									params : { 
-										"environmentContextName" : IDDynamicForm_SetupDevelopmentEnvironment_Field_EnvironmentContext.getValue(),
-										"projectName" : IDDynamicForm_SetupDevelopmentEnvironment_Field_ProjectName.getValue(),
-										"intent" : IDDynamicForm_SetupDevelopmentEnvironment_Field_Intent.getValue(),
-										"branchName" : IDDynamicForm_SetupDevelopmentEnvironment_Field_BranchName.getValue(),
-										"gitAccountName" : IDDynamicForm_SetupDevelopmentEnvironment_Field_GitAccountName.getValue(),
-									}, 
-									callback: function(response, rawData, request) {
-										vsSetupResults = voScui.fGetOneStringFromDataInResponseRawData(rawData);
-										IDDynamicFormSetupDevelopmentEnvironment_Field_Results.setValue(vsSetupResults);
-									}, 
-									actionURL: "/api/development_environment/setup-an-environment"
-								});
+								var voRequest = { 
+										params : { 
+											"environmentContextName" : IDDynamicForm_SetupDevelopmentEnvironment_Field_EnvironmentContext.getValue(),
+											"projectName" : IDDynamicForm_SetupDevelopmentEnvironment_Field_ProjectName.getValue(),
+											"intent" : IDDynamicForm_SetupDevelopmentEnvironment_Field_Intent.getValue(),
+											"branchName" : IDDynamicForm_SetupDevelopmentEnvironment_Field_BranchName.getValue(),
+											"gitAccountName" : IDDynamicForm_SetupDevelopmentEnvironment_Field_GitAccountName.getValue(),
+										}, 
+										callback: function(response, rawData, request) {
+											vsSetupResults = voScui.fGetOneStringFromDataInResponseRawData(rawData);
+											IDDynamicFormSetupDevelopmentEnvironment_Field_Results.setValue(vsSetupResults);
+										}, 
+										actionURL: "/api/development_environment/setup-an-environment"
+									};
+								isc.RPCManager.sendRequest(voRequest);
+//								isc.RPCManager.sendRequest({ 
+//									params : { 
+//										"environmentContextName" : IDDynamicForm_SetupDevelopmentEnvironment_Field_EnvironmentContext.getValue(),
+//										"projectName" : IDDynamicForm_SetupDevelopmentEnvironment_Field_ProjectName.getValue(),
+//										"intent" : IDDynamicForm_SetupDevelopmentEnvironment_Field_Intent.getValue(),
+//										"branchName" : IDDynamicForm_SetupDevelopmentEnvironment_Field_BranchName.getValue(),
+//										"gitAccountName" : IDDynamicForm_SetupDevelopmentEnvironment_Field_GitAccountName.getValue(),
+//									}, 
+//									callback: function(response, rawData, request) {
+//										vsSetupResults = voScui.fGetOneStringFromDataInResponseRawData(rawData);
+//										IDDynamicFormSetupDevelopmentEnvironment_Field_Results.setValue(vsSetupResults);
+//									}, 
+//									actionURL: "/api/development_environment/setup-an-environment"
+//								});
 							}
 							catch(error) {
 								alert(JSON.stringify(error));

@@ -22,6 +22,9 @@ import org.slf4j.LoggerFactory;
 import com.ecdragon.parzival.features.git.GitRepository;
 import com.ecdragon.parzival.utils.UtilsParzival;
 
+/**
+ * THIS HAS MOVED TO DevelopmentEnvironmentService::setupDevelopmentEnvironment() !!!!
+ */
 public class SetupDevelopmentEnvironment {
 	
 	@SuppressWarnings("unused")
@@ -120,6 +123,7 @@ public class SetupDevelopmentEnvironment {
 	}
 	
 	/**
+	 * THIS HAS MOVED TO DevelopmentEnvironmentService::setupDevelopmentEnvironment() !!!!
 	 * sets up a dev environment, and includes Eclipse
 	 */
 	public void setupDevelopmentEnvironment() {

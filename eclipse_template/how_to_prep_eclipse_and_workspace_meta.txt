@@ -14,8 +14,8 @@ Steps to prep Eclipse and workspace meta folder, and run
   - At workspace prompt, browse for the new template_workspace folder you made
   - Check the "Use this as the default and do not ask again" checkbox
   - Click "Launch" button
-  - Uncheck the "Always show welcome at start up" checkbox (lower right)
-  - Click the "Workbench" button (upper right)
+  - Make sure this is unchecked - the "Always show welcome at start up" checkbox (lower right)
+  - Click the "Hide" button (upper right)
   - Make the window bigger and center
     - (this is how it will open the first time it's copied / opened...)
   - Ctrl-H opens only File search
@@ -39,16 +39,20 @@ Steps to prep Eclipse and workspace meta folder, and run
       - Uncheck "Automatically find new updates and notify me"
     - Apply and Close (Preferences)
   - Arrange UI as desired
+    - Close Donate window
     - Project Explorer
       - In left pane (should already be there) 
-      - 3 Dots (menu option upper right in pane) -> Package Presentation -> Hierarchical
-      - "Link with Editor" (double-yellow arrows) (and Navigator pane)
+      - 3 Dots (menu option upper right in pane)
+        - Project Presentation -> Flat 
+        - Package Presentation -> Hierarchical
+      - "Link with Editor" (double-yellow arrows)
     - Outline pane
       - In the left pane (with Project Explorer)
       - NO - (not available anymore) - Click the Sort Alphabetically toggle (to "on" position) (can't, sorry!)
     - Close Task List pane (right)
     - Open Console (should show in bottom-right) (Window -> Show View -> Console)
-    - Close panes on bottom: Markers, Properties, Servers, Data Source Explorer, Snippets
+    - Move Servers pane from lower middle to lower left (making a new pane under Package Explorer pane)
+    - Close panes on bottom: Markers, Properties, Data Source Explorer, Snippets
     - Window -> Show View -> other (repeat for each below...)
       - Debug (then move it to lower left)
         - 3 Dots (menu) -> Show Debug Toolbar option
@@ -65,7 +69,7 @@ Steps to prep Eclipse and workspace meta folder, and run
   - Install "Yaml Editor" from Eclipse Marketplace (install anyway, don't restart Eclipse)
   - Install "Eclipse Docker Tooling" from Eclipse Marketplace (don't restart)
   - Install "Bash Editor" from Eclipse Marketplace 
-    - install anyway, restart Eclipse -> check the "Remember my decision" checkbox
+    - install anyway, restart Eclipse
   - After restart...
   - Make file associations (like Associate .bash files with bash editor)
     - Preferences -> General -> Editors -> File Associations -> File Types (upper right pane)
@@ -85,8 +89,11 @@ Steps to prep Eclipse and workspace meta folder, and run
       - Example was:
         - RECENT_WORKSPACES=/Data/eclipse_projects/d/180918_01_parzival/workspace/parzival/eclipse_workspace_templates/2018-12-R/template_workspace
       - Example is now:
-        - RECENT_WORKSPACES=replace_me        
-  - Set templateEclipseDirectoryPath var in SetupDevelopmentEnvironment.java to the new template workspace dir you just made
+        - RECENT_WORKSPACES=replace_me 
+  - Set the pathStringFromAppWorkingDirToEclipseTemplateDir property in application.properties to new dir
+    - from eclipse_template -> eclipse_template/2020-12-R  (example)       
+  - NO - This file is deprecated and moved to DevelopmentEnvironmentService
+  	- NO - Set templateEclipseDirectoryPath var in SetupDevelopmentEnvironment.java to the new template workspace dir you just made
   - Run your new dev env setup via running via Run As -> Java Application in SetupDevelopmentEnvironment.java
   
 

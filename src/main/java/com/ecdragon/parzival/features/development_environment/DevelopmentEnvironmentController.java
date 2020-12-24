@@ -57,6 +57,13 @@ public class DevelopmentEnvironmentController {
 				branchName = branchNameStringIn;
 			}
 			
+			String gitAccountName = null;
+			if (gitAccountNameStringIn != null 
+					&& !gitAccountNameStringIn.isEmpty()
+					&& !gitAccountNameStringIn.equalsIgnoreCase("null")) {
+				gitAccountName = gitAccountNameStringIn;
+			}
+			
 			developmentEnvironmentService.setupAnEnvironment(
 					environmentContextEnum, 
 					projectNameStringIn, 
@@ -65,7 +72,7 @@ public class DevelopmentEnvironmentController {
 					branchName, 
 					null, 
 					null, 
-					gitAccountNameStringIn,
+					gitAccountName,
 					null
 					);
 			
